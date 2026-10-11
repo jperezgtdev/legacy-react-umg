@@ -1,0 +1,8 @@
+[
+  { "id": 1, "nombre": "Ingeniería en Sistemas" },
+  { "id": 2, "nombre": "Administración de Empresas" },
+  { "id": 3, "nombre": "Contaduría Pública" },
+  { "id": 4, "nombre": "Diseño Gráfico" },
+  { "id": 5, "nombre": "Ingeniería Industrial" },
+  { "id": 6, "nombre": "Psicología" }
+]

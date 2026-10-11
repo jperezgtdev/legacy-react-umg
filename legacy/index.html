@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ingreso de estudiantes (Legacy)</title>
+    <!-- CSS: define la apariencia. Se mantiene en un archivo separado del HTML. -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!--
+      HTML: define la estructura de la interfaz. En el enfoque tradicional,
+      todos los contenedores existen desde el inicio en este archivo y
+      JavaScript los busca por su id para llenarlos o modificarlos.
+    -->
+    <header class="encabezado">
+      <div class="encabezado__contenido">
+        <h1>Ingreso de estudiantes</h1>
+        <p class="encabezado__subtitulo">
+          Versión legacy: HTML, CSS y JavaScript tradicional
+        </p>
+      </div>
+    </header>
+
+    <main class="contenedor">
+      <!--
+        Zona de mensajes generales (éxito y error de operaciones).
+        aria-live="polite" hace que los lectores de pantalla anuncien el texto
+        cuando JavaScript lo cambia.
+      -->
+      <div id="mensaje-general" class="zona-mensaje" aria-live="polite"></div>
+
+      <div class="disposicion">
+        <!-- Formulario de registro y edición -->
+        <section class="tarjeta" aria-labelledby="titulo-formulario">
+          <h2 id="titulo-formulario" class="tarjeta__titulo">Registrar estudiante</h2>
+
+          <!--
+            novalidate desactiva los mensajes nativos del navegador para que
+            todas las validaciones se realicen con las mismas reglas de
+            validaciones.js, igual que en la versión React.
+          -->
+          <form id="formulario-estudiante" class="formulario" novalidate>
+            <!-- Un fieldset deshabilitado bloquea todos sus campos a la vez (útil mientras se carga o se guarda). -->
+            <fieldset id="campos-formulario" class="formulario__campos" disabled>
+              <legend class="solo-lectores">Datos del estudiante</legend>
+
+              <!-- Cada label se asocia a su campo mediante for/id; al hacer clic en la etiqueta se enfoca el campo. -->
+              <div class="campo">
+                <label for="codigo">Código <span class="obligatorio">*</span></label>
+                <input id="codigo" name="codigo" type="text" maxlength="20" autocomplete="off"
+                  aria-describedby="error-codigo ayuda-codigo" />
+                <small id="ayuda-codigo" class="campo__ayuda">Se propone automáticamente; puede modificarse.</small>
+                <span id="error-codigo" class="campo__error"></span>
+              </div>
+
+              <div class="fila-campos">
+                <div class="campo">
+                  <label for="nombres">Nombres <span class="obligatorio">*</span></label>
+                  <input id="nombres" name="nombres" type="text" maxlength="60" aria-describedby="error-nombres" />
+                  <span id="error-nombres" class="campo__error"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="apellidos">Apellidos <span class="obligatorio">*</span></label>
+                  <input id="apellidos" name="apellidos" type="text" maxlength="60" aria-describedby="error-apellidos" />
+                  <span id="error-apellidos" class="campo__error"></span>
+                </div>
+              </div>
+
+              <div class="campo">
+                <label for="correo">Correo electrónico <span class="obligatorio">*</span></label>
+                <input id="correo" name="correo" type="email" maxlength="100" aria-describedby="error-correo" />
+                <span id="error-correo" class="campo__error"></span>
+              </div>
+
+              <div class="campo">
+                <label for="telefono">Teléfono</label>
+                <input id="telefono" name="telefono" type="text" maxlength="20" aria-describedby="error-telefono" />
+                <span id="error-telefono" class="campo__error"></span>
+              </div>
+
+              <div class="campo">
+                <label for="carreraId">Carrera <span class="obligatorio">*</span></label>
+                <!-- Las opciones de carrera se agregan desde JavaScript con los datos de carreras.json. -->
+                <select id="carreraId" name="carreraId" aria-describedby="error-carreraId">
+                  <option value="">Seleccione una carrera</option>
+                </select>
+                <span id="error-carreraId" class="campo__error"></span>
+              </div>
+
+              <div class="fila-campos">
+                <div class="campo">
+                  <label for="fechaIngreso">Fecha de ingreso <span class="obligatorio">*</span></label>
+                  <input id="fechaIngreso" name="fechaIngreso" type="date" aria-describedby="error-fechaIngreso" />
+                  <span id="error-fechaIngreso" class="campo__error"></span>
+                </div>
+
+                <div class="campo">
+                  <label for="estado">Estado <span class="obligatorio">*</span></label>
+                  <select id="estado" name="estado" aria-describedby="error-estado">
+                    <option value="ACTIVO">Activo</option>
+                    <option value="INACTIVO">Inactivo</option>
+                  </select>
+                  <span id="error-estado" class="campo__error"></span>
+                </div>
+              </div>
+
+              <div class="formulario__acciones">
+                <button id="boton-guardar" type="submit" class="boton boton--primario">
+                  Registrar estudiante
+                </button>
+                <button id="boton-cancelar" type="button" class="boton boton--secundario">
+                  Limpiar
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </section>
+
+        <!-- Listado de estudiantes -->
+        <section class="tarjeta" aria-labelledby="titulo-listado">
+          <div class="tarjeta__encabezado">
+            <h2 id="titulo-listado" class="tarjeta__titulo">Estudiantes registrados</h2>
+            <p id="contador-estudiantes" class="contador"></p>
+          </div>
+
+          <div class="buscador">
+            <label for="buscador" class="buscador__etiqueta">Buscar estudiante</label>
+            <input id="buscador" type="search" class="buscador__campo"
+              placeholder="Código, nombres, apellidos o correo" autocomplete="off" />
+          </div>
+
+          <!--
+            La tabla solo contiene encabezados. El cuerpo (tbody) está vacío
+            porque JavaScript crea las filas a partir de los datos del JSON.
+          -->
+          <div class="tabla-contenedor">
+            <table class="tabla">
+              <thead>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Nombres</th>
+                  <th scope="col">Apellidos</th>
+                  <th scope="col">Correo electrónico</th>
+                  <th scope="col">Carrera</th>
+                  <th scope="col">Fecha de ingreso</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="cuerpo-tabla"></tbody>
+            </table>
+          </div>
+
+          <!-- Contenedor para los estados de carga, lista vacía y error de consulta. -->
+          <div id="estado-tabla" class="estado-tabla"></div>
+        </section>
+      </div>
+    </main>
+
+    <!--
+      Cuadro de confirmación para eliminar. Existe en el HTML desde el inicio,
+      oculto con el atributo hidden; JavaScript lo muestra y lo oculta.
+    -->
+    <div id="dialogo-eliminar" class="dialogo-fondo" hidden>
+      <div class="dialogo" role="alertdialog" aria-modal="true"
+        aria-labelledby="dialogo-titulo" aria-describedby="dialogo-descripcion">
+        <h2 id="dialogo-titulo" class="dialogo__titulo">Confirmar eliminación</h2>
+        <p id="dialogo-descripcion" class="dialogo__texto"></p>
+        <div class="dialogo__acciones">
+          <button id="dialogo-cancelar" type="button" class="boton boton--secundario">Cancelar</button>
+          <button id="dialogo-confirmar" type="button" class="boton boton--peligro">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      JavaScript: define el comportamiento. Sin módulos, todos los scripts
+      comparten el ámbito global, por lo que el ORDEN importa: cada archivo
+      solo puede usar lo que declararon los archivos cargados antes.
+      defer descarga los scripts en paralelo pero los ejecuta en este orden y
+      cuando el HTML ya fue analizado, de modo que los elementos ya existen.
+    -->
+    <script src="js/mensajes.js" defer></script>
+    <script src="js/utilidades.js" defer></script>
+    <script src="js/validaciones.js" defer></script>
+    <!-- Copia de los datos usada solo si la página se abre con doble clic (file://). -->
+    <script src="datos/datos-locales.js" defer></script>
+    <script src="js/servicios/estudiantesService.js" defer></script>
+    <script src="js/estudiantes.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </body>
+</html>

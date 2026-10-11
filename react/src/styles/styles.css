@@ -1,0 +1,520 @@
+/*
+ * styles.css
+ *
+ * Hoja de estilos compartida por ambas versiones del laboratorio. La versión
+ * React usa una copia idéntica (react/src/styles/styles.css) con las mismas
+ * clases, para que la apariencia sea equivalente y la comparación se centre
+ * en cómo se construye la interfaz, no en cómo se ve.
+ *
+ * Convención de nombres: bloque__elemento--modificador (BEM simplificado).
+ * Ejemplo: .boton (bloque), .boton--primario (variante).
+ */
+
+/* Variables CSS: centralizan colores y medidas para cambiarlos en un solo lugar. */
+:root {
+  --color-fondo: #f4f6f9;
+  --color-superficie: #ffffff;
+  --color-borde: #d9dee7;
+  --color-texto: #1f2937;
+  --color-texto-suave: #5b6474;
+  --color-primario: #1d4ed8;
+  --color-primario-oscuro: #1e3a8a;
+  --color-peligro: #b91c1c;
+  --color-peligro-fondo: #fdecec;
+  --color-exito: #166534;
+  --color-exito-fondo: #e7f6ec;
+  --color-info-fondo: #eef2f9;
+  --color-edicion: #fff8e1;
+  --radio: 8px;
+  --sombra: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --fuente: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fuente);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+/* Oculta un elemento visualmente pero lo mantiene disponible para lectores de pantalla. */
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Encabezado ---------- */
+
+.encabezado {
+  background: var(--color-primario-oscuro);
+  color: #ffffff;
+  padding: 20px 16px;
+}
+
+.encabezado__contenido {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.encabezado h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.encabezado__subtitulo {
+  color: #c7d2fe;
+  font-size: 0.9rem;
+}
+
+/* ---------- Disposición general ---------- */
+
+.contenedor {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* Una columna en pantallas pequeñas; dos columnas (formulario y listado) en pantallas anchas. */
+.disposicion {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 1100px) {
+  .disposicion {
+    grid-template-columns: 380px 1fr;
+  }
+}
+
+.tarjeta {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 20px;
+  min-width: 0; /* Permite que la tabla se desplace dentro de la tarjeta en lugar de ensanchar la página. */
+}
+
+.tarjeta__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.tarjeta__titulo {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.contador {
+  color: var(--color-texto-suave);
+  font-size: 0.85rem;
+}
+
+/* ---------- Formulario ---------- */
+
+.formulario__campos {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Solo separación horizontal: el espacio vertical lo aporta el margen inferior de cada .campo. */
+.fila-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+}
+
+@media (max-width: 420px) {
+  .fila-campos {
+    grid-template-columns: 1fr;
+  }
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.campo label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.obligatorio {
+  color: var(--color-peligro);
+}
+
+.campo input,
+.campo select,
+.buscador__campo {
+  width: 100%;
+  padding: 8px 10px;
+  font: inherit;
+  color: inherit;
+  background: #ffffff;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+}
+
+.campo input:focus,
+.campo select:focus,
+.buscador__campo:focus {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 1px;
+  border-color: var(--color-primario);
+}
+
+.campo input:disabled,
+.campo select:disabled {
+  background: #f1f3f6;
+  color: var(--color-texto-suave);
+}
+
+.campo__control--error {
+  border-color: var(--color-peligro) !important;
+}
+
+.campo__ayuda {
+  color: var(--color-texto-suave);
+  font-size: 0.8rem;
+}
+
+/* El contenedor de error existe siempre; solo ocupa espacio cuando tiene texto. */
+.campo__error {
+  color: var(--color-peligro);
+  font-size: 0.82rem;
+}
+
+.campo__error:empty {
+  display: none;
+}
+
+.formulario__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+/* ---------- Botones ---------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font: inherit;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.boton:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+.boton--primario {
+  background: var(--color-primario);
+  color: #ffffff;
+}
+
+.boton--primario:hover:not(:disabled) {
+  background: var(--color-primario-oscuro);
+}
+
+.boton--secundario {
+  background: #ffffff;
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+
+.boton--secundario:hover:not(:disabled) {
+  background: #f1f3f6;
+}
+
+.boton--peligro {
+  background: var(--color-peligro);
+  color: #ffffff;
+}
+
+.boton--peligro:hover:not(:disabled) {
+  background: #991b1b;
+}
+
+.boton--pequeno {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}
+
+/* ---------- Buscador ---------- */
+
+.buscador {
+  margin-bottom: 14px;
+}
+
+.buscador__etiqueta {
+  display: block;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+/* ---------- Tabla ---------- */
+
+/* El contenedor permite desplazamiento horizontal si la tabla no cabe. */
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla th,
+.tabla td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--color-borde);
+  vertical-align: middle;
+}
+
+/* El código y la fecha no deben partirse en dos líneas. */
+.tabla td:nth-child(1),
+.tabla td:nth-child(6) {
+  white-space: nowrap;
+}
+
+.tabla th {
+  background: var(--color-info-fondo);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tabla tbody tr:hover {
+  background: #fafbfd;
+}
+
+.tabla__fila--edicion,
+.tabla tbody tr.tabla__fila--edicion:hover {
+  background: var(--color-edicion);
+}
+
+.acciones {
+  display: flex;
+  gap: 6px;
+}
+
+.insignia {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.insignia--activo {
+  background: var(--color-exito-fondo);
+  color: var(--color-exito);
+}
+
+.insignia--inactivo {
+  background: #eceff3;
+  color: var(--color-texto-suave);
+}
+
+/*
+ * En pantallas pequeñas cada fila se muestra como una tarjeta. El nombre de
+ * la columna se toma del atributo data-etiqueta de cada celda.
+ */
+@media (max-width: 720px) {
+  .tabla thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .tabla,
+  .tabla tbody,
+  .tabla tr,
+  .tabla td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla tr {
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    margin-bottom: 12px;
+    padding: 6px 10px;
+  }
+
+  .tabla td {
+    display: grid;
+    grid-template-columns: 9.5em 1fr;
+    gap: 8px;
+    border-bottom: 0;
+    padding: 4px 0;
+    overflow-wrap: anywhere;
+  }
+
+  .tabla td::before {
+    content: attr(data-etiqueta);
+    font-weight: 600;
+    color: var(--color-texto-suave);
+  }
+}
+
+/* ---------- Mensajes y estados ---------- */
+
+.zona-mensaje:empty,
+.estado-tabla:empty {
+  display: none;
+}
+
+.zona-mensaje {
+  margin-bottom: 16px;
+}
+
+.estado-tabla {
+  margin-top: 16px;
+}
+
+.mensaje {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radio);
+  border: 1px solid var(--color-borde);
+  background: var(--color-info-fondo);
+}
+
+.mensaje__texto {
+  flex: 1;
+}
+
+.mensaje--exito {
+  background: var(--color-exito-fondo);
+  border-color: #b7e0c4;
+  color: var(--color-exito);
+}
+
+.mensaje--error {
+  background: var(--color-peligro-fondo);
+  border-color: #f5c2c2;
+  color: var(--color-peligro);
+}
+
+.mensaje__cerrar {
+  background: none;
+  border: 0;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.indicador-carga {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #c7d2fe;
+  border-top-color: var(--color-primario);
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Cuadro de confirmación ---------- */
+
+.dialogo-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10;
+}
+
+/* El atributo hidden debe prevalecer sobre display: flex. */
+.dialogo-fondo[hidden] {
+  display: none;
+}
+
+.dialogo {
+  background: var(--color-superficie);
+  border-radius: var(--radio);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+  padding: 22px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.dialogo__titulo {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.dialogo__texto {
+  color: var(--color-texto-suave);
+  margin-bottom: 18px;
+}
+
+.dialogo__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicador-carga {
+    animation-duration: 2.5s;
+  }
+}
