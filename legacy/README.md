@@ -136,8 +136,8 @@ legacy/
 │   └── app.js                     Estado, eventos y coordinación
 ├── datos/
 │   ├── estudiantes.json           12 estudiantes ficticios
-│   └── carreras.json              6 carreras ficticias
-├── texto.txt                      Archivo que ya existía en el directorio; se conserva sin cambios
+│   ├── carreras.json              6 carreras ficticias
+│   └── datos-locales.js           Copia de los datos para abrir la página con doble clic
 └── README.md
 ```
 
@@ -156,7 +156,9 @@ Ventajas observadas: no requiere instalación ni compilación, el navegador ejec
 
 ## 11. Cómo ejecutar el proyecto
 
-Requisito: un navegador moderno y un **servidor web local**. Abrir `index.html` con doble clic (dirección `file://`) **no funciona**, porque los navegadores bloquean `fetch` sobre archivos locales; en ese caso se verá el mensaje "No fue posible consultar los datos de estudiantes".
+**Forma rápida:** abrir `legacy/index.html` con doble clic. La dirección empieza con `file://` y, como los navegadores bloquean `fetch` sobre archivos locales, el servicio usa la copia `datos/datos-locales.js`, cargada con `<script>`. La consola lo indica con un aviso. Si se modifican los JSON, hay que actualizar también esa copia.
+
+**Forma recomendada:** usar un **servidor web local**, para que los datos se consulten realmente con `fetch`, como ocurriría con una API.
 
 **Opción A: Node.js (desde una instalación limpia)**
 
